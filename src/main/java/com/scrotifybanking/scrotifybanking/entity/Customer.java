@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,10 +19,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@SequenceGenerator(name = "seq", initialValue = 1000)
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Column(name = "customer_id")
     private String customerId;
 
@@ -39,10 +41,10 @@ public class Customer implements Serializable {
     private String accountType;
 
     @Column(name = "customer_dob")
-    private Date customerDob;
+    private LocalDate customerDob;
 
     @Column(name = "customer_mobileno")
-    private Integer customerMobileno;
+    private Long customerMobileno;
 
     @Column(name = "customer_city")
     private String customerCity;
@@ -145,7 +147,7 @@ public class Customer implements Serializable {
      *
      * @return the customer dob
      */
-    public Date getCustomerDob() {
+    public LocalDate getCustomerDob() {
         return customerDob;
     }
 
@@ -154,7 +156,7 @@ public class Customer implements Serializable {
      *
      * @param customerDob the customer dob
      */
-    public void setCustomerDob(Date customerDob) {
+    public void setCustomerDob(LocalDate customerDob) {
         this.customerDob = customerDob;
     }
 
@@ -163,7 +165,7 @@ public class Customer implements Serializable {
      *
      * @return the customer mobileno
      */
-    public Integer getCustomerMobileno() {
+    public Long getCustomerMobileno() {
         return customerMobileno;
     }
 
@@ -172,7 +174,7 @@ public class Customer implements Serializable {
      *
      * @param customerMobileno the customer mobileno
      */
-    public void setCustomerMobileno(Integer customerMobileno) {
+    public void setCustomerMobileno(Long customerMobileno) {
         this.customerMobileno = customerMobileno;
     }
 

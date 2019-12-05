@@ -34,8 +34,8 @@ public class Transaction implements Serializable {
     @Column(name = "transaction_date")
     private LocalDate transactionDate;
 
-  /*@Column(name = "from_account_no")
-  private Integer fromAccountNo;*/
+    /*@Column(name = "from_account_no")
+    private Integer fromAccountNo;*/
     @Column(name = "amount")
     private Double amount;
     @Column(name = "transaction_type")

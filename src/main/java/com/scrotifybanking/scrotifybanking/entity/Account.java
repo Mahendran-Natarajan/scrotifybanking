@@ -18,11 +18,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@SequenceGenerator(name = "seq", initialValue = 100000)
 public class Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq")
     @Column(name = "account_no")
     private Long accountNo;
 
@@ -38,7 +39,8 @@ public class Account implements Serializable {
     @Column(name = "available_balance")
     private Double availableBalance;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    //@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "customerId")
     private Customer customer;
 

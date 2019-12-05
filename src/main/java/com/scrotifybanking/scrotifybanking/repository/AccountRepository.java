@@ -1,11 +1,13 @@
 package com.scrotifybanking.scrotifybanking.repository;
 
 import com.scrotifybanking.scrotifybanking.entity.Account;
+import com.scrotifybanking.scrotifybanking.entity.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The interface Account repository.
@@ -44,4 +46,29 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      */
     @Query("select acc from Account acc where acc.customer.customerId != :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
     List<Account> findAllByAccountNotCustomer(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+
+    /**
+     * Account Repository has one method.It is used to find the method by accountType.
+     *
+     * @param accountType the account type
+     * @return account account
+     */
+    Account findByAccountType(String accountType);
+
+    /**
+     * Find account by customer account.
+     *
+     * @param customerId the customer id
+     * @return the account
+     */
+    @Query("select acc from Account acc where acc.customer.customerId = :customerId")
+    Account findAccountByCustomer(@Param("customerId") Long customerId);
+
+    /**
+     * Find by customer optional.
+     *
+     * @param customer the customer
+     * @return the optional
+     */
+    Optional<Account> findByCustomer(Optional<Customer> customer);
 }

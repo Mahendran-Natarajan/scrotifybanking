@@ -1,5 +1,7 @@
 package com.scrotifybanking.scrotifybanking.service.impl;
 
+import com.scrotifybanking.scrotifybanking.dto.TransactionStatementDto;
+import com.scrotifybanking.scrotifybanking.dto.TransactionStatementResponseDto;
 import com.scrotifybanking.scrotifybanking.dto.response.ApiResponse;
 import com.scrotifybanking.scrotifybanking.entity.Account;
 import com.scrotifybanking.scrotifybanking.entity.Transaction;
@@ -7,10 +9,13 @@ import com.scrotifybanking.scrotifybanking.repository.AccountRepository;
 import com.scrotifybanking.scrotifybanking.repository.TransactionRepository;
 import com.scrotifybanking.scrotifybanking.service.TransactionService;
 import com.scrotifybanking.scrotifybanking.util.ScrotifyConstant;
+import com.scrotifybanking.scrotifybanking.util.StatementDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -71,7 +76,7 @@ public class TransactionServiceImpl implements TransactionService {
         Account customerAccount = accountRepository.findByCustomerByAccount(custId, accountStatus, accountType);
         Optional<Account> customerAccountOptional = Optional.of(customerAccount);
 
-        if (accountOptional.isPresent() && customerAccountOptional.isPresent()) {
+        if (accountOptional.isPresent()) {
             payeeAccount = accountOptional.get();
             double balanceAmount = customerAccount.getAvailableBalance() - amount;
             customerAccount.setAvailableBalance(balanceAmount);
@@ -103,4 +108,45 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return response;
     }
+
+
+    /**
+     * Description:
+     *
+     * @param transactionStatementDto
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<TransactionStatementResponseDto> getTransactionStatement(
+            TransactionStatementDto transactionStatementDto, String accountStatus, String accountType) throws Exception {
+        TransactionStatementResponseDto transactionStatementResponseDto = null;
+        String month = transactionStatementDto.getMonth();
+        Account customerId = accountRepository.findByCustomerByAccount(String.valueOf(transactionStatementDto.getCustomerId()), accountStatus, accountType);
+        List<TransactionStatementResponseDto> monthlyTransaction = new ArrayList<>();
+        if (null != customerId) {
+            List<Transaction> transaction = transactionRepository.findByAccountNo(customerId.getAccountNo());
+            for (Transaction transact : transaction) {
+                Integer transactionMonth = transact.getTransactionDate().getMonthValue();
+
+                Integer actualMonthNumber = StatementDate.monthConverter(month);
+
+                if (actualMonthNumber == transactionMonth) {
+                    transactionStatementResponseDto = new TransactionStatementResponseDto();
+                    transactionStatementResponseDto.setTransactionId(transact.getTransactionId());
+                    transactionStatementResponseDto.setAmount(transact.getAmount());
+                    transactionStatementResponseDto.setTransactionType(transact.getTransactionType());
+                    monthlyTransaction.add(transactionStatementResponseDto);
+                    transactionStatementResponseDto.setMessage("transactions");
+                    transactionStatementResponseDto.setStatusCode(201);
+                } else {
+                    throw new Exception("there are no transactions available");
+                }
+            }
+        } else {
+            throw new Exception("User not found");
+        }
+        return monthlyTransaction;
+    }
+
 }

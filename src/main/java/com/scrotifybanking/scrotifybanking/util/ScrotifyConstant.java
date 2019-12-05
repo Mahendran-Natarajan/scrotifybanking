@@ -21,6 +21,10 @@ public final class ScrotifyConstant {
      * The constant SUCCESS_CODE.
      */
     public static final int SUCCESS_CODE = 200;
+    /**
+     * The constant SUCCESS_CODE.
+     */
+    public static final int AGE_LIMIT = 18;
 
     /**
      * The constant ACCOUNT_ACTIVE_STATUS.
@@ -47,6 +51,9 @@ public final class ScrotifyConstant {
      */
     public static final String MAINTAIN_BALANCE_FAILED = "Maintain minimum balance";
 
+    /**
+     * The constant CUSTOMER_ID_NOT_FOUND.
+     */
     public static final String CUSTOMER_ID_NOT_FOUND = "Customer ID not found";
     /**
      * The constant MINIMUM_BALANCE_MAINTAIN.
@@ -57,6 +64,24 @@ public final class ScrotifyConstant {
      */
     public static final int TRANSACTION_FAILED = 1;
 
+
+    /**
+     * The constant FAILURE_MESSAGE.
+     */
+    public static final String FAILURE_MESSAGE = "You have already registered or your age is less than 18 years";
+
+    /**
+     * The constant NOT_FOUND_MESSAGE.
+     */
+    public static final String NOT_FOUND_MESSAGE = "CUSTOMER NOT FOUND";
+    /**
+     * The constant FAILURE_CODE.
+     */
+    public static final int FAILURE_CODE = 401;
+    /**
+     * The constant FAILURE_CODE.
+     */
+    public static final int NOT_FOUND_CODE = 404;
 
     private ScrotifyConstant() {
 

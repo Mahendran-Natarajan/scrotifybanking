@@ -1,6 +1,10 @@
 package com.scrotifybanking.scrotifybanking.service;
 
+import com.scrotifybanking.scrotifybanking.dto.TransactionStatementDto;
+import com.scrotifybanking.scrotifybanking.dto.TransactionStatementResponseDto;
 import com.scrotifybanking.scrotifybanking.dto.response.ApiResponse;
+
+import java.util.List;
 
 /**
  * The interface Transaction service.
@@ -14,7 +18,7 @@ public interface TransactionService {
      * @param accountStatus the account status
      * @param accountType   the account type
      * @param amount        the amount
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean checkMinimumBalance(String custId, String accountStatus, String accountType, double amount);
 
@@ -26,7 +30,7 @@ public interface TransactionService {
      * @param accountType     the account type
      * @param amount          the amount
      * @param maintainBalance the maintain balance
-     * @return boolean
+     * @return boolean boolean
      */
     public boolean checkManintenanceBalance(String custId, String accountStatus, String accountType, double amount, double maintainBalance);
 
@@ -42,4 +46,14 @@ public interface TransactionService {
      */
     public ApiResponse transferFund(String custId, String toAccountNo, double amount, String accountStatus, String accountType);
 
+    /**
+     * Gets transaction statement.
+     *
+     * @param transactionStatementDto the transaction statement dto
+     * @param accountStatus           the account status
+     * @param accountType             the account type
+     * @return the transaction statement
+     * @throws Exception the exception
+     */
+    public List<TransactionStatementResponseDto> getTransactionStatement(TransactionStatementDto transactionStatementDto, String accountStatus, String accountType) throws Exception;
 }

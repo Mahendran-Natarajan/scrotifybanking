@@ -1,13 +1,16 @@
 package com.scrotifybanking.scrotifybanking.web;
 
-import com.scrotifybanking.scrotifybanking.dto.FundRequestDto;
+import com.scrotifybanking.scrotifybanking.dto.*;
 import com.scrotifybanking.scrotifybanking.dto.response.AccountNosDto;
 import com.scrotifybanking.scrotifybanking.dto.response.ApiResponse;
 import com.scrotifybanking.scrotifybanking.entity.Account;
+import com.scrotifybanking.scrotifybanking.entity.Customer;
 import com.scrotifybanking.scrotifybanking.exception.CustomException;
 import com.scrotifybanking.scrotifybanking.exception.MaintainBalanceException;
 import com.scrotifybanking.scrotifybanking.exception.MinimumBalanceNotFoundException;
 import com.scrotifybanking.scrotifybanking.repository.AccountRepository;
+import com.scrotifybanking.scrotifybanking.repository.CustomerRepository;
+import com.scrotifybanking.scrotifybanking.service.CustomerService;
 import com.scrotifybanking.scrotifybanking.service.TransactionService;
 import com.scrotifybanking.scrotifybanking.util.ScrotifyConstant;
 import org.modelmapper.ModelMapper;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -27,12 +31,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/customers")
 public class CustomerController {
 
+    /**
+     * The Customer service.
+     */
+    @Autowired
+    CustomerService customerService;
+    /**
+     * The Customer repository.
+     */
+    @Autowired
+    CustomerRepository customerRepository;
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private TransactionService transactionService;
-
     @Autowired
     private ModelMapper modelMapper;
 
@@ -73,6 +85,7 @@ public class CustomerController {
      *
      * @param custId the cust id
      * @return all account nos
+     * @throws CustomException the custom exception
      */
     @GetMapping("/{custId}/accounts/")
     @CrossOrigin
@@ -89,5 +102,64 @@ public class CustomerController {
         return new ResponseEntity<>(accountNosDtos, HttpStatus.OK);
     }
 
+    /**
+     * Gets transaction statement.
+     *
+     * @param transactionStatementDto the transaction statement dto
+     * @return transaction statement
+     * @throws Exception the exception
+     */
+    @GetMapping("/{custId}/transactions/{month}")
+    public List<TransactionStatementResponseDto> getTransactionStatement(TransactionStatementDto transactionStatementDto) throws Exception {
+        List<TransactionStatementResponseDto> transactionStatementResponseDto = transactionService.getTransactionStatement(transactionStatementDto, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
+        return transactionStatementResponseDto;
+    }
+
+    /**
+     * Register customer customer response dto.
+     *
+     * @param customerRequestDto the customer request dto
+     * @return the customer response dto
+     */
+    @CrossOrigin
+    @PostMapping
+    public CustomerResponseDto registerCustomer(@RequestBody CustomerRequestDto customerRequestDto) {
+        CustomerResponseDto customerResponseDto = customerService.registerCustomer(customerRequestDto);
+        return customerResponseDto;
+    }
+
+
+    /**
+     * Login customer response entity.
+     *
+     * @param loginDto the login dto
+     * @return the response entity
+     */
+    @CrossOrigin
+    @PostMapping("/{customerId}/{password}")
+    public ResponseEntity<LoginResponseDto> loginCustomer(@RequestBody LoginDto loginDto) {
+        Optional<Customer> customer = customerRepository.findByCustomerId(loginDto.getCustId());
+        if (null == customer) {
+            LoginResponseDto loginResponseDto = new LoginResponseDto();
+            loginResponseDto.setStatusCode(ScrotifyConstant.NOT_FOUND_CODE);
+            loginResponseDto.setStatusMessage(ScrotifyConstant.NOT_FOUND_MESSAGE);
+            return new ResponseEntity<>(loginResponseDto, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(customerService.loginCustomer(loginDto), HttpStatus.OK);
+        }
+    }
+
+
+    /**
+     * Last transaction response entity.
+     *
+     * @param customerId the customer id
+     * @return the response entity
+     */
+    @CrossOrigin
+    @GetMapping("/{customerId}")
+    public ResponseEntity<AccountSummaryResponseDto> lastTransaction(@RequestParam Long customerId) {
+        return new ResponseEntity<AccountSummaryResponseDto>(customerService.accountSummary(customerId), HttpStatus.OK);
+    }
 
 }

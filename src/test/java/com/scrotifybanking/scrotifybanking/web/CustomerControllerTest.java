@@ -22,6 +22,9 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 
+/**
+ * The type Customer controller test.
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerControllerTest {
 
@@ -38,6 +41,11 @@ public class CustomerControllerTest {
     private ModelMapper modelMapper;
 
 
+    /**
+     * Test get all accounts.
+     *
+     * @throws CustomException the custom exception
+     */
     @Test
     public void testGetAllAccounts() throws CustomException {
         String custId = "123456";
@@ -58,6 +66,11 @@ public class CustomerControllerTest {
         Assert.assertEquals(accountNosDtos.getBody().getAccountNos().get(0).longValue(), 10L);
     }
 
+    /**
+     * Test get in valid cust.
+     *
+     * @throws CustomException the custom exception
+     */
     @Test(expected = CustomException.class)
     public void testGetInValidCust() throws CustomException {
         String custId = "12345689";
@@ -67,6 +80,11 @@ public class CustomerControllerTest {
     }
 
 
+    /**
+     * Test fund transfer.
+     *
+     * @throws CustomException the custom exception
+     */
     @Test
     public void testFundTransfer() throws CustomException {
         String custId = "123456";

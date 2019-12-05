@@ -16,6 +16,14 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
 
+    /**
+     * findAllByAccount except current cust
+     *
+     * @param custId        the cust id
+     * @param accountStatus the account status
+     * @param accountType   the account type
+     * @return
+     */
     @Override
     public List<Account> findAllByAccountNotCustomer(String custId, String accountStatus, String accountType) {
         return accountRepository.findAllByAccountNotCustomer(custId, accountStatus, accountType);
