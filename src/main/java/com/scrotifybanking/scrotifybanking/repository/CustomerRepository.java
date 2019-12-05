@@ -1,9 +1,11 @@
 package com.scrotifybanking.scrotifybanking.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.scrotifybanking.scrotifybanking.entity.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer> {
+/**
+ * The interface Customer repository.
+ */
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
 }

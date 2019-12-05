@@ -1,9 +1,47 @@
 package com.scrotifybanking.scrotifybanking.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.scrotifybanking.scrotifybanking.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-public interface AccountRepository extends JpaRepository<Account, Integer>, JpaSpecificationExecutor<Account> {
+import java.util.List;
 
+/**
+ * The interface Account repository.
+ */
+public interface AccountRepository extends JpaRepository<Account, Long> {
+
+    /**
+     * Find by account balance double.
+     *
+     * @param custId        the cust id
+     * @param accountStatus the account status
+     * @param accountType   the account type
+     * @return the double
+     */
+    @Query("select acc.availableBalance from Account acc where acc.customer.customerId = :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
+    double findByAccountBalance(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+
+    /**
+     * Find by customer by account account.
+     *
+     * @param custId        the cust id
+     * @param accountStatus the account status
+     * @param accountType   the account type
+     * @return the account
+     */
+    @Query("select acc from Account acc where acc.customer.customerId = :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
+    public Account findByCustomerByAccount(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+
+    /**
+     * Find all by account not customer list.
+     *
+     * @param custId        the cust id
+     * @param accountStatus the account status
+     * @param accountType   the account type
+     * @return the list
+     */
+    @Query("select acc from Account acc where acc.customer.customerId != :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
+    List<Account> findAllByAccountNotCustomer(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
 }
