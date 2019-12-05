@@ -41,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
      * @return
      */
     @Override
-    public boolean checkMinimumBalance(String custId, String accountStatus, String accountType, double amount) {
+    public boolean checkMinimumBalance(Long custId, String accountStatus, String accountType, double amount) {
         double existingAmount = accountRepository.findByAccountBalance(custId, accountStatus, accountType);
         if (existingAmount > amount) {
             return true;
@@ -59,7 +59,7 @@ public class TransactionServiceImpl implements TransactionService {
      * @return
      */
     @Override
-    public boolean checkManintenanceBalance(String custId, String accountStatus, String accountType, double amount, double maintainBalance) {
+    public boolean checkManintenanceBalance(Long custId, String accountStatus, String accountType, double amount, double maintainBalance) {
         double existingAmount = accountRepository.findByAccountBalance(custId, accountStatus, accountType);
         if (existingAmount > (maintainBalance + amount)) {
             return true;
@@ -69,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     @Override
-    public ApiResponse transferFund(String custId, String toAccountNo, double amount, String accountStatus, String accountType) {
+    public ApiResponse transferFund(Long custId, String toAccountNo, double amount, String accountStatus, String accountType) {
         ApiResponse response = new ApiResponse();
         Account payeeAccount = null;
         Optional<Account> accountOptional = accountRepository.findById(Long.parseLong(toAccountNo));
@@ -122,7 +122,7 @@ public class TransactionServiceImpl implements TransactionService {
             TransactionStatementDto transactionStatementDto, String accountStatus, String accountType) throws Exception {
         TransactionStatementResponseDto transactionStatementResponseDto = null;
         String month = transactionStatementDto.getMonth();
-        Account customerId = accountRepository.findByCustomerByAccount(String.valueOf(transactionStatementDto.getCustomerId()), accountStatus, accountType);
+        Account customerId = accountRepository.findByCustomerByAccount(transactionStatementDto.getCustomerId(), accountStatus, accountType);
         List<TransactionStatementResponseDto> monthlyTransaction = new ArrayList<>();
         if (null != customerId) {
             List<Transaction> transaction = transactionRepository.findByAccountNo(customerId.getAccountNo());

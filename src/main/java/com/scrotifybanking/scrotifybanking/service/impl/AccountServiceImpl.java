@@ -26,6 +26,6 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public List<Account> findAllByAccountNotCustomer(String custId, String accountStatus, String accountType) {
-        return accountRepository.findAllByAccountNotCustomer(custId, accountStatus, accountType);
+        return accountRepository.findAllByAccountNotCustomer(Long.parseLong(custId), accountStatus, accountType);
     }
 }

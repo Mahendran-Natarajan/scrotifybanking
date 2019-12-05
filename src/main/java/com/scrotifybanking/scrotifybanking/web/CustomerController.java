@@ -63,13 +63,13 @@ public class CustomerController {
     public ResponseEntity<ApiResponse> fundTransfer(@PathVariable String custId, @PathVariable String toAccountNo,
                                                     @RequestBody @Valid FundRequestDto fundRequestDto) throws MinimumBalanceNotFoundException, MaintainBalanceException {
 
-        boolean checkMinimumBalance = transactionService.checkMinimumBalance(custId, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, fundRequestDto.getAmount());
+        boolean checkMinimumBalance = transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()));
         ApiResponse response = new ApiResponse();
         response.setStatusCode(ScrotifyConstant.TRANSACTION_FAILED);
         response.setMessage(ScrotifyConstant.FUND_TRANSFER_FAILED);
         if (checkMinimumBalance) {
-            if (transactionService.checkManintenanceBalance(custId, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, fundRequestDto.getAmount(), ScrotifyConstant.MINIMUM_BALANCE_MAINTAIN)) {
-                response = transactionService.transferFund(custId, toAccountNo, fundRequestDto.getAmount(), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
+            if (transactionService.checkManintenanceBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()), ScrotifyConstant.MINIMUM_BALANCE_MAINTAIN)) {
+                response = transactionService.transferFund(Long.parseLong(custId), toAccountNo, Double.parseDouble(fundRequestDto.getAmount()), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
                 response.setMessage(ScrotifyConstant.FUND_TRANSFER_SUCCESS);
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
@@ -92,7 +92,7 @@ public class CustomerController {
     public ResponseEntity<AccountNosDto> getAllAccountNos(@PathVariable String custId) throws CustomException {
 
         AccountNosDto accountNosDtos = new AccountNosDto();
-        List<Account> accounts = accountRepository.findAllByAccountNotCustomer(custId, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
+        List<Account> accounts = accountRepository.findAllByAccountNotCustomer(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
         if (accounts.size() > 0) {
             List<Long> accountNos = accounts.stream().map(Account::getAccountNo).collect(Collectors.toList());
             accountNosDtos.setAccountNos(accountNos);

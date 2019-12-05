@@ -20,7 +20,7 @@ public interface TransactionService {
      * @param amount        the amount
      * @return boolean boolean
      */
-    public boolean checkMinimumBalance(String custId, String accountStatus, String accountType, double amount);
+    public boolean checkMinimumBalance(Long custId, String accountStatus, String accountType, double amount);
 
     /**
      * Check maintenance balance after withdraw
@@ -32,7 +32,7 @@ public interface TransactionService {
      * @param maintainBalance the maintain balance
      * @return boolean boolean
      */
-    public boolean checkManintenanceBalance(String custId, String accountStatus, String accountType, double amount, double maintainBalance);
+    public boolean checkManintenanceBalance(Long custId, String accountStatus, String accountType, double amount, double maintainBalance);
 
     /**
      * Transfer fund api response.
@@ -44,7 +44,7 @@ public interface TransactionService {
      * @param accountType   the account type
      * @return the api response
      */
-    public ApiResponse transferFund(String custId, String toAccountNo, double amount, String accountStatus, String accountType);
+    public ApiResponse transferFund(Long custId, String toAccountNo, double amount, String accountStatus, String accountType);
 
     /**
      * Gets transaction statement.

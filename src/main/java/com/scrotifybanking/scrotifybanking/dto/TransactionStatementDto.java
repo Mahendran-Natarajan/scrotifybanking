@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class TransactionStatementDto implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer customerId;
+    private Long customerId;
     private String month;
 
     /**
@@ -21,7 +21,7 @@ public class TransactionStatementDto implements Serializable {
      *
      * @return the customer id
      */
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
@@ -30,7 +30,7 @@ public class TransactionStatementDto implements Serializable {
      *
      * @param customerId the customer id
      */
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 

@@ -23,7 +23,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * @return the double
      */
     @Query("select acc.availableBalance from Account acc where acc.customer.customerId = :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
-    double findByAccountBalance(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+    double findByAccountBalance(@Param("custId") Long custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
 
     /**
      * Find by customer by account account.
@@ -34,7 +34,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * @return the account
      */
     @Query("select acc from Account acc where acc.customer.customerId = :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
-    public Account findByCustomerByAccount(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+    public Account findByCustomerByAccount(@Param("custId") Long custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
 
     /**
      * Find all by account not customer list.
@@ -45,7 +45,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * @return the list
      */
     @Query("select acc from Account acc where acc.customer.customerId != :custId and acc.accountStatus = :accountStatus and acc.accountType = :accountType")
-    List<Account> findAllByAccountNotCustomer(@Param("custId") String custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
+    List<Account> findAllByAccountNotCustomer(@Param("custId") Long custId, @Param("accountStatus") String accountStatus, @Param("accountType") String accountType);
 
     /**
      * Account Repository has one method.It is used to find the method by accountType.

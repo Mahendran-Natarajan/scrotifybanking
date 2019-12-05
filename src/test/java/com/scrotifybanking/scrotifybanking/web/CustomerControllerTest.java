@@ -90,7 +90,7 @@ public class CustomerControllerTest {
         String custId = "123456";
         String toAccountNo = "2";
         FundRequestDto fundRequestDto = new FundRequestDto();
-        fundRequestDto.setAmount(100);
+        fundRequestDto.setAmount("1000");
         Mockito.when(transactionService.checkMinimumBalance(any(), any(), any(), any())).thenReturn(true);
         Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
         ResponseEntity<ApiResponse> response = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);

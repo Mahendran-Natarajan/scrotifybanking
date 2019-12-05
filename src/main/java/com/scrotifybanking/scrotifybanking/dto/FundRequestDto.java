@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 public class FundRequestDto {
 
     @NotBlank(message = "Amount should not be blank")
-    private double amount;
+    private String amount;
 
     /**
      * Instantiates a new Fund request dto.
@@ -21,7 +21,7 @@ public class FundRequestDto {
      *
      * @return the amount
      */
-    public double getAmount() {
+    public String getAmount() {
         return amount;
     }
 
@@ -30,7 +30,7 @@ public class FundRequestDto {
      *
      * @param amount the amount
      */
-    public void setAmount(double amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
 }

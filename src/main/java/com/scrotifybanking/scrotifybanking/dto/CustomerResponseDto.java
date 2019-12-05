@@ -6,7 +6,7 @@ package com.scrotifybanking.scrotifybanking.dto;
  */
 public class CustomerResponseDto {
 
-    private String customerId;
+    private Long customerId;
     private String message;
     private Integer statusCode;
 
@@ -15,7 +15,7 @@ public class CustomerResponseDto {
      *
      * @return the customer id
      */
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
@@ -24,7 +24,7 @@ public class CustomerResponseDto {
      *
      * @param customerId the customer id
      */
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
