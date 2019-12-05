@@ -25,5 +25,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      * @param accountDetails the account details
      * @return the list
      */
-    List<Transaction> findTop5ByAccountOrderByTransactionIdDesc(Optional<Account> accountDetails);
+    List<Transaction> findTop5ByAccountNoOrderByTransactionIdDesc(Optional<Account> accountDetails);
 }

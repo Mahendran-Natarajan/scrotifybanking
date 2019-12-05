@@ -14,8 +14,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "account")
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @SequenceGenerator(name = "seq", initialValue = 100000)
@@ -44,7 +42,7 @@ public class Account implements Serializable {
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "accountNo")
     private List<Transaction> transactionList;
 
     /**

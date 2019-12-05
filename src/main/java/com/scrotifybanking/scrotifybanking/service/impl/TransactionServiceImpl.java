@@ -87,18 +87,18 @@ public class TransactionServiceImpl implements TransactionService {
             payeeAccount.setAvailableBalance(payeeAccountBalance);
 
             Transaction customertransaction = new Transaction();
-            customertransaction.setAccount(customerAccount);
+            customertransaction.setAccountNo(customerAccount);
             customertransaction.setAmount(amount);
             customertransaction.setTransactionDate(LocalDate.now());
             customertransaction.setTransactionType(ScrotifyConstant.DEBIT_TRANSACTION);
             customertransaction.setPayeeNo(Long.parseLong(toAccountNo));
 
             Transaction payeeTransaction = new Transaction();
-            payeeTransaction.setAccount(payeeAccount);
+            payeeTransaction.setAccountNo(payeeAccount);
             payeeTransaction.setAmount(amount);
             payeeTransaction.setTransactionDate(LocalDate.now());
             payeeTransaction.setTransactionType(ScrotifyConstant.CREDIT_TRANSACTION);
-            payeeTransaction.setPayeeNo(customertransaction.getAccount().getAccountNo());
+            payeeTransaction.setPayeeNo(customertransaction.getAccountNo().getAccountNo());
 
             transactionRepository.save(customertransaction);
             transactionRepository.save(payeeTransaction);

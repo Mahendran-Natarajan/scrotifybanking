@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
         LocalDate birthDate = customerRequestDto.getDob();
         LocalDate currentDate = LocalDate.now();
         Integer calculateAge = Period.between(birthDate, currentDate).getYears();
-        Optional<Customer> customers = customerRepository.findByMobileNo(customerRequestDto.getPhone());
+        Optional<Customer> customers = customerRepository.findByCustomerMobileNo(customerRequestDto.getPhone());
         if (!customers.isPresent()) {
             if (customerRequestDto.getAccountType().equalsIgnoreCase(ScrotifyConstant.ACCOUNT_TYPE) && calculateAge >= ScrotifyConstant.AGE_LIMIT) {
                 Customer customer = new Customer();
@@ -57,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setCustomerEmail(customerRequestDto.getEmailId());
                 customer.setCustomerName(customerRequestDto.getName());
                 customer.setCustomerPassword(customerRequestDto.getPassword());
-                customer.setCustomerMobileno(customerRequestDto.getPhone());
+                customer.setCustomerMobileNo(customerRequestDto.getPhone());
                 customerRepository.save(customer);
                 Account account = new Account();
                 account.setAccountStatus(ScrotifyConstant.ACCOUNT_ACTIVE_STATUS);
@@ -101,7 +101,7 @@ public class CustomerServiceImpl implements CustomerService {
         Optional<Customer> customer = customerRepository.findByCustomerId(customerId);
         Optional<Account> accountDetails = accountRepository.findByCustomer(customer);
         List<Transaction> transactions = transactionRepository
-                .findTop5ByAccountOrderByTransactionIdDesc(accountDetails);
+                .findTop5ByAccountNoOrderByTransactionIdDesc(accountDetails);
         List<TransactionDto> transactionsList = new ArrayList<TransactionDto>();
         if (accountDetails.isPresent() && customer.isPresent()) {
             accountSummaryResponseDto.setAccountNumber(accountDetails.get().getAccountNo());
