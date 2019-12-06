@@ -5,8 +5,11 @@ import com.scrotifybanking.scrotifybanking.dto.response.AccountNosDto;
 import com.scrotifybanking.scrotifybanking.dto.response.ApiResponse;
 import com.scrotifybanking.scrotifybanking.entity.Account;
 import com.scrotifybanking.scrotifybanking.exception.CustomException;
+import com.scrotifybanking.scrotifybanking.exception.MaintainBalanceException;
+import com.scrotifybanking.scrotifybanking.exception.MinimumBalanceNotFoundException;
 import com.scrotifybanking.scrotifybanking.repository.AccountRepository;
 import com.scrotifybanking.scrotifybanking.service.TransactionService;
+import com.scrotifybanking.scrotifybanking.util.ScrotifyConstant;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +22,10 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
+
 
 /**
  * The type Customer controller test.
@@ -85,16 +90,47 @@ public class CustomerControllerTest {
      *
      * @throws CustomException the custom exception
      */
-    @Test
-    public void testFundTransfer() throws CustomException {
+    @Test (expected = MaintainBalanceException.class)
+    public void testFundTransferCheckMinimumFalse() throws CustomException {
         String custId = "123456";
         String toAccountNo = "2";
         FundRequestDto fundRequestDto = new FundRequestDto();
         fundRequestDto.setAmount("1000");
-        Mockito.when(transactionService.checkMinimumBalance(any(), any(), any(), any())).thenReturn(true);
-        Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
+       // Mockito.when(transactionService.checkMinimumBalance(any(), any(), any(), any())).thenReturn(new Boolean(true));
+       // Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
         ResponseEntity<ApiResponse> response = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);
         Assert.assertNotNull(response);
+    }
+
+    @Test (expected = MinimumBalanceNotFoundException.class)
+    public void testFundTransferCheckMaintainBalance() throws CustomException {
+        String custId = "123456";
+        String toAccountNo = "2";
+        FundRequestDto fundRequestDto = new FundRequestDto();
+        fundRequestDto.setAmount("1000");
+         Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
+        // Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
+        ResponseEntity<ApiResponse> response = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);
+        Assert.assertNotNull(response);
+    }
+
+    @Test
+    public void testFundTransferCheck() throws CustomException {
+        String custId = "123456";
+        String toAccountNo = "2";
+        FundRequestDto fundRequestDto = new FundRequestDto();
+        fundRequestDto.setAmount("1000");
+        Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
+        Mockito.when(transactionService.checkManintenanceBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()),  ScrotifyConstant.MINIMUM_BALANCE_MAINTAIN)).thenReturn(true);
+        ApiResponse response = new ApiResponse();
+        response.setMessage("success");
+        response.setStatusCode(200);
+        Mockito.when(transactionService.transferFund(anyLong(), anyString(), anyDouble(), any(), any())).thenReturn(response);
+        ResponseEntity<ApiResponse> responseRes = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getMessage());
+        Assert.assertNotNull(response.getStatusCode());
+
     }
 
 }
