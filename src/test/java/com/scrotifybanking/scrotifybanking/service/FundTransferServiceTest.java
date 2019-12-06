@@ -37,28 +37,29 @@ public class FundTransferServiceTest {
 
     @Test
     public void testMinimumBalanceTrue() {
-        Mockito.when( accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
-        boolean flag =  transactionService.checkMinimumBalance(1000L, "active", "Saving", 200);
+        Mockito.when(accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
+        boolean flag = transactionService.checkMinimumBalance(1000L, "active", "Saving", 200);
         Assert.assertTrue(flag);
     }
+
     @Test
     public void testMinimumBalanceFalse() {
-        Mockito.when( accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
-        boolean flag =  transactionService.checkMinimumBalance(1000L, "active", "Saving", 2000);
+        Mockito.when(accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
+        boolean flag = transactionService.checkMinimumBalance(1000L, "active", "Saving", 2000);
         Assert.assertFalse(flag);
     }
 
     @Test
     public void testMaintainBalanceFalse() {
-        Mockito.when( accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
-        boolean flag =  transactionService.checkManintenanceBalance(1000L, "active", "Saving", 2000, 5000);
+        Mockito.when(accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(1000.00);
+        boolean flag = transactionService.checkManintenanceBalance(1000L, "active", "Saving", 2000, 5000);
         Assert.assertFalse(flag);
     }
 
     @Test
     public void testMaintainBalanceTrue() {
-        Mockito.when( accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(10000.00);
-        boolean flag =  transactionService.checkManintenanceBalance(1000L, "active", "Saving", 2000, 5000);
+        Mockito.when(accountRepository.findByAccountBalance(anyLong(), anyString(), anyString())).thenReturn(10000.00);
+        boolean flag = transactionService.checkManintenanceBalance(1000L, "active", "Saving", 2000, 5000);
         Assert.assertTrue(flag);
     }
 

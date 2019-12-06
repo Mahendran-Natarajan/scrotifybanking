@@ -43,10 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public boolean checkMinimumBalance(Long custId, String accountStatus, String accountType, double amount) {
         double existingAmount = accountRepository.findByAccountBalance(custId, accountStatus, accountType);
-        if (existingAmount > amount) {
-            return true;
-        }
-        return false;
+        return (existingAmount > amount);
     }
 
     /**
@@ -74,7 +71,6 @@ public class TransactionServiceImpl implements TransactionService {
         Account payeeAccount = null;
         Optional<Account> accountOptional = accountRepository.findById(Long.parseLong(toAccountNo));
         Account customerAccount = accountRepository.findByCustomerByAccount(custId, accountStatus, accountType);
-        Optional<Account> customerAccountOptional = Optional.of(customerAccount);
 
         if (accountOptional.isPresent()) {
             payeeAccount = accountOptional.get();

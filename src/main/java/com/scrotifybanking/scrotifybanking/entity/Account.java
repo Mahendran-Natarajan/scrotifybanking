@@ -1,9 +1,7 @@
 package com.scrotifybanking.scrotifybanking.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -30,9 +28,6 @@ public class Account implements Serializable {
 
     @Column(name = "account_status")
     private String accountStatus;
-
-//  @Column(name = "customer_id")
-//  private String customerId;
 
     @Column(name = "available_balance")
     private Double availableBalance;

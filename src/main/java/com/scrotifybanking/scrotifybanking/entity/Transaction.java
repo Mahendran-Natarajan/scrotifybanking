@@ -1,9 +1,7 @@
 package com.scrotifybanking.scrotifybanking.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,16 +24,14 @@ public class Transaction implements Serializable {
 
     @Column(name = "payee_no")
     private Long payeeNo;
-    
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "accountNo")
     private Account accountNo;
-    
+
     @Column(name = "transaction_date")
     private LocalDate transactionDate;
 
-    /*@Column(name = "from_account_no")
-    private Integer fromAccountNo;*/
     @Column(name = "amount")
     private Double amount;
     @Column(name = "transaction_type")

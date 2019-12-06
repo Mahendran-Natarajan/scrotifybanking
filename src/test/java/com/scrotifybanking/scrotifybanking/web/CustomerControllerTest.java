@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.ArgumentMatchers.*;
 
@@ -67,8 +66,8 @@ public class CustomerControllerTest {
 
         ResponseEntity<AccountNosDto> accountNosDtos = customerController.getAllAccountNos(custId);
         Assert.assertNotNull(accountNosDtos);
-        Assert.assertEquals(accountNosDtos.getStatusCode().value(), 200);
-        Assert.assertEquals(accountNosDtos.getBody().getAccountNos().get(0).longValue(), 10L);
+        Assert.assertEquals(200, accountNosDtos.getStatusCode().value());
+        Assert.assertEquals(10L, accountNosDtos.getBody().getAccountNos().get(0).longValue());
     }
 
     /**
@@ -90,25 +89,25 @@ public class CustomerControllerTest {
      *
      * @throws CustomException the custom exception
      */
-    @Test (expected = MaintainBalanceException.class)
+    @Test(expected = MaintainBalanceException.class)
     public void testFundTransferCheckMinimumFalse() throws CustomException {
         String custId = "123456";
         String toAccountNo = "2";
         FundRequestDto fundRequestDto = new FundRequestDto();
         fundRequestDto.setAmount("1000");
-       // Mockito.when(transactionService.checkMinimumBalance(any(), any(), any(), any())).thenReturn(new Boolean(true));
-       // Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
+        // Mockito.when(transactionService.checkMinimumBalance(any(), any(), any(), any())).thenReturn(new Boolean(true));
+        // Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
         ResponseEntity<ApiResponse> response = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);
         Assert.assertNotNull(response);
     }
 
-    @Test (expected = MinimumBalanceNotFoundException.class)
+    @Test(expected = MinimumBalanceNotFoundException.class)
     public void testFundTransferCheckMaintainBalance() throws CustomException {
         String custId = "123456";
         String toAccountNo = "2";
         FundRequestDto fundRequestDto = new FundRequestDto();
         fundRequestDto.setAmount("1000");
-         Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
+        Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
         // Mockito.when(transactionService.checkManintenanceBalance(any(), any(), any(), any(), any())).thenReturn(true);
         ResponseEntity<ApiResponse> response = customerController.fundTransfer(custId, toAccountNo, fundRequestDto);
         Assert.assertNotNull(response);
@@ -120,8 +119,8 @@ public class CustomerControllerTest {
         String toAccountNo = "2";
         FundRequestDto fundRequestDto = new FundRequestDto();
         fundRequestDto.setAmount("1000");
-        Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
-        Mockito.when(transactionService.checkManintenanceBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE,Double.parseDouble(fundRequestDto.getAmount()),  ScrotifyConstant.MINIMUM_BALANCE_MAINTAIN)).thenReturn(true);
+        Mockito.when(transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()))).thenReturn(true);
+        Mockito.when(transactionService.checkManintenanceBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()), ScrotifyConstant.MINIMUM_BALANCE_MAINTAIN)).thenReturn(true);
         ApiResponse response = new ApiResponse();
         response.setMessage("success");
         response.setStatusCode(200);

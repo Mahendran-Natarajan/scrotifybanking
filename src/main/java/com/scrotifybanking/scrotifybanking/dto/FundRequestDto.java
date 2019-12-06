@@ -11,12 +11,6 @@ public class FundRequestDto {
     private String amount;
 
     /**
-     * Instantiates a new Fund request dto.
-     */
-    public FundRequestDto() {
-    }
-
-    /**
      * Gets amount.
      *
      * @return the amount

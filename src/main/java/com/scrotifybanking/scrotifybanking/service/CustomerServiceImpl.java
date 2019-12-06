@@ -23,22 +23,22 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-	/**
-	 * The Customer repository.
-	 */
-	@Autowired
+    /**
+     * The Customer repository.
+     */
+    @Autowired
     CustomerRepository customerRepository;
 
-	/**
-	 * The Account repository.
-	 */
-	@Autowired
+    /**
+     * The Account repository.
+     */
+    @Autowired
     AccountRepository accountRepository;
 
-	/**
-	 * The Transaction repository.
-	 */
-	@Autowired
+    /**
+     * The Transaction repository.
+     */
+    @Autowired
     TransactionRepository transactionRepository;
 
     @Override
@@ -83,14 +83,16 @@ public class CustomerServiceImpl implements CustomerService {
         Long customerId = loginDto.getCustId();
         String password = loginDto.getPassword();
         Optional<Customer> customer = customerRepository.findByCustomerId(customerId);
-        if (customer.get().getCustomerId().equals(customerId) && customer.get().getCustomerPassword().equals(password)) {
-            loginResponseDto.setName(customer.get().getCustomerName());
-            loginResponseDto.setStatusCode(ScrotifyConstant.SUCCESS_CODE);
-            loginResponseDto.setStatusMessage(ScrotifyConstant.SUCCESS_MESSAGE);
+        if (customer.isPresent()) {
+            if (customer.get().getCustomerId().equals(customerId) && customer.get().getCustomerPassword().equals(password)) {
+                loginResponseDto.setName(customer.get().getCustomerName());
+                loginResponseDto.setStatusCode(ScrotifyConstant.SUCCESS_CODE);
+                loginResponseDto.setStatusMessage(ScrotifyConstant.SUCCESS_MESSAGE);
 
-        } else {
-            loginResponseDto.setStatusCode(ScrotifyConstant.FAILURE_CODE);
-            loginResponseDto.setStatusMessage(ScrotifyConstant.FAILURE_MESSAGE);
+            } else {
+                loginResponseDto.setStatusCode(ScrotifyConstant.FAILURE_CODE);
+                loginResponseDto.setStatusMessage(ScrotifyConstant.FAILURE_MESSAGE);
+            }
         }
         return loginResponseDto;
     }

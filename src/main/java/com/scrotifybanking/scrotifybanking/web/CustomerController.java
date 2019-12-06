@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/customers")
+@CrossOrigin
 public class CustomerController {
 
     /**
@@ -61,7 +62,7 @@ public class CustomerController {
     @PostMapping("/{custId}/accounts/{toAccountNo}")
     @CrossOrigin
     public ResponseEntity<ApiResponse> fundTransfer(@PathVariable String custId, @PathVariable String toAccountNo,
-                                                    @RequestBody @Valid FundRequestDto fundRequestDto) throws MinimumBalanceNotFoundException, MaintainBalanceException {
+                                                    @RequestBody @Valid FundRequestDto fundRequestDto) {
 
         boolean checkMinimumBalance = transactionService.checkMinimumBalance(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE, Double.parseDouble(fundRequestDto.getAmount()));
         ApiResponse response = new ApiResponse();
@@ -89,11 +90,11 @@ public class CustomerController {
      */
     @GetMapping("/{custId}/accounts/")
     @CrossOrigin
-    public ResponseEntity<AccountNosDto> getAllAccountNos(@PathVariable String custId) throws CustomException {
+    public ResponseEntity<AccountNosDto> getAllAccountNos(@PathVariable String custId) {
 
         AccountNosDto accountNosDtos = new AccountNosDto();
         List<Account> accounts = accountRepository.findAllByAccountNotCustomer(Long.parseLong(custId), ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
-        if (accounts.size() > 0) {
+        if (!accounts.isEmpty()) {
             List<Long> accountNos = accounts.stream().map(Account::getAccountNo).collect(Collectors.toList());
             accountNosDtos.setAccountNos(accountNos);
         } else {
@@ -109,10 +110,10 @@ public class CustomerController {
      * @return transaction statement
      * @throws Exception the exception
      */
+    @CrossOrigin
     @GetMapping("/{custId}/transactions/{month}")
     public List<TransactionStatementResponseDto> getTransactionStatement(TransactionStatementDto transactionStatementDto) throws Exception {
-        List<TransactionStatementResponseDto> transactionStatementResponseDto = transactionService.getTransactionStatement(transactionStatementDto, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
-        return transactionStatementResponseDto;
+        return transactionService.getTransactionStatement(transactionStatementDto, ScrotifyConstant.ACCOUNT_ACTIVE_STATUS, ScrotifyConstant.ACCOUNT_TYPE);
     }
 
     /**
@@ -124,8 +125,7 @@ public class CustomerController {
     @CrossOrigin
     @PostMapping
     public CustomerResponseDto registerCustomer(@RequestBody CustomerRequestDto customerRequestDto) {
-        CustomerResponseDto customerResponseDto = customerService.registerCustomer(customerRequestDto);
-        return customerResponseDto;
+        return customerService.registerCustomer(customerRequestDto);
     }
 
 
@@ -139,7 +139,7 @@ public class CustomerController {
     @PostMapping("/{customerId}/{password}")
     public ResponseEntity<LoginResponseDto> loginCustomer(@RequestBody LoginDto loginDto) {
         Optional<Customer> customer = customerRepository.findByCustomerId(loginDto.getCustId());
-        if (null == customer) {
+        if (!customer.isPresent()) {
             LoginResponseDto loginResponseDto = new LoginResponseDto();
             loginResponseDto.setStatusCode(ScrotifyConstant.NOT_FOUND_CODE);
             loginResponseDto.setStatusMessage(ScrotifyConstant.NOT_FOUND_MESSAGE);
@@ -159,7 +159,7 @@ public class CustomerController {
     @CrossOrigin
     @GetMapping("/{customerId}")
     public ResponseEntity<AccountSummaryResponseDto> lastTransaction(@RequestParam Long customerId) {
-        return new ResponseEntity<AccountSummaryResponseDto>(customerService.accountSummary(customerId), HttpStatus.OK);
+        return new ResponseEntity<>(customerService.accountSummary(customerId), HttpStatus.OK);
     }
 
 }
