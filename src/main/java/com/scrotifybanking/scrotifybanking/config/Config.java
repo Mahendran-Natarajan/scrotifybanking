@@ -9,13 +9,13 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class Config {
-    /**
-     * Model mapper model mapper.
-     *
-     * @return the model mapper
-     */
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+	/**
+	 * Model mapper model mapper.
+	 *
+	 * @return the model mapper
+	 */
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
 }

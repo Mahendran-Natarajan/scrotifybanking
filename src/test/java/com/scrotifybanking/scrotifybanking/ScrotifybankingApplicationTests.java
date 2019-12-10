@@ -13,7 +13,7 @@ class ScrotifybankingApplicationTests {
      * Context loads.
      */
     @Test
-    void contextLoads() {
+    void contextLoads() { //NOSONAR
     }
 
 }

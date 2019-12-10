@@ -7,24 +7,24 @@ import javax.validation.constraints.NotBlank;
  */
 public class FundRequestDto {
 
-    @NotBlank(message = "Amount should not be blank")
-    private String amount;
+	@NotBlank(message = "Amount should not be blank")
+	private String amount;
 
-    /**
-     * Gets amount.
-     *
-     * @return the amount
-     */
-    public String getAmount() {
-        return amount;
-    }
+	/**
+	 * Gets amount.
+	 *
+	 * @return the amount
+	 */
+	public String getAmount() {
+		return amount;
+	}
 
-    /**
-     * Sets amount.
-     *
-     * @param amount the amount
-     */
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
+	/**
+	 * Sets amount.
+	 *
+	 * @param amount the amount
+	 */
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
 }
