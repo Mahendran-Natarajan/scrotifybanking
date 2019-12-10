@@ -10,61 +10,65 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginResponseDto {
 
-    private String name;
-    private String statusMessage;
-    private Integer statusCode;
+	private String name;
+	private String message;
+	private Integer statusCode;
+	private Long customerId;
 
-    /**
-     * Gets name.
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * Sets name.
-     *
-     * @param name the name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    /**
-     * Gets status message.
-     *
-     * @return the status message
-     */
-    public String getStatusMessage() {
-        return statusMessage;
-    }
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
 
-    /**
-     * Sets status message.
-     *
-     * @param statusMessage the status message
-     */
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
-    }
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    /**
-     * Gets status code.
-     *
-     * @return the status code
-     */
-    public Integer getStatusCode() {
-        return statusCode;
-    }
+	/**
+	 * @return the statusCode
+	 */
+	public Integer getStatusCode() {
+		return statusCode;
+	}
 
-    /**
-     * Sets status code.
-     *
-     * @param statusCode the status code
-     */
-    public void setStatusCode(Integer statusCode) {
-        this.statusCode = statusCode;
-    }
+	/**
+	 * @param statusCode the statusCode to set
+	 */
+	public void setStatusCode(Integer statusCode) {
+		this.statusCode = statusCode;
+	}
+
+	/**
+	 * @return the customerId
+	 */
+	public Long getCustomerId() {
+		return customerId;
+	}
+
+	/**
+	 * @param customerId the customerId to set
+	 */
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+
 }
